@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Acesso | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        .top-bar {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .top-bar-left { display: flex; align-items: center; gap: 15px; }
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .content-padding { 
+            padding: 30px 20px; 
+            display: flex; 
+            justify-content: center; 
+        }
+
+        /* --- Card de Acesso --- */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 { font-size: 1.3rem; color: var(--primary); margin-top: 0; margin-bottom: 25px; }
+
+        .btn-generate {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .btn-generate:active { transform: scale(0.98); }
+
+        .qr-placeholder {
+            margin: 20px auto;
+            width: 220px;
+            height: 220px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #eee;
+        }
+        
+        .qr-placeholder img { width: 100%; height: 100%; }
+
+        .timer {
+            color: var(--danger);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP-LOCK</strong><br>
+            <small>Henrique S. Souza</small>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 Início</a>
+            <a href="user_history.html">📜 Meu Histórico</a>
+            <a href="user_profile.html">👤 Perfil</a>
+            <a href="help.html">❓ Ajuda</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="menu-icon" onclick="openNav()">☰</div>
+                <div style="font-weight: bold; font-size: 1.1rem;">Acesso</div>
+            </div>
+            <a href="index.html" class="btn-back">← Voltar</a>
+        </div>
+
+        <div class="content-padding">
+            <div class="card">
+                <h2>Sala de Apoio - SanFran</h2>
+                
+                <div id="access-area">
+                    <button class="btn-generate" onclick="generateKey()">GERAR CHAVE DE ACESSO</button>
+                </div>
+
+                <div class="info">
+                    Aproxime o QR Code da câmera da fechadura para liberar a entrada.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function generateKey() {
+            const area = document.getElementById('access-area');
+            area.innerHTML = `
+                <div class="qr-placeholder">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CAUSP-SECRET-TOKEN-123" alt="QR Code">
+                </div>
+                <div class="timer">Expira em: <span id="time">05:00</span></div>
+            `;
+            startTimer(300, document.querySelector('#time'));
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ":" + seconds;
+                if (--timer < 0) timer = 0;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

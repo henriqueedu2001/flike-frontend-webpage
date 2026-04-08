@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        /* --- Overlay --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Card de Configuração --- */
+        .config-card { 
+            background: white; 
+            padding: 35px; 
+            border-radius: 12px; 
+            max-width: 600px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .config-section-title {
+            margin: 0 0 25px 0;
+            font-size: 1.2rem;
+            color: var(--primary);
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .form-group { margin-bottom: 25px; }
+
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            color: #444; 
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        select { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--primary);
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: #fcfcfc;
+        }
+
+        .btn-save { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            font-size: 1rem;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-save:hover { opacity: 0.9; }
+        .btn-save:active { transform: scale(0.98); }
+
+        .helper-text {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 6px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP Admin</strong><br>
+            <small>Configurações Globais</small>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="usuarios.html">👥 Usuários</a>
+            <a href="predios.html">🏛️ Prédios</a>
+            <a href="logs.html">🔑 Chaves Antigas</a>
+            <a href="config.html">⚙️ Configurações</a>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <h1 style="margin: 0; font-size: 1.15rem;">Configurações do Sistema</h1>
+        </header>
+
+        <div class="content-padding">
+            <div class="config-card">
+                <h2 class="config-section-title">Parâmetros de Segurança</h2>
+                
+                <div class="form-group">
+                    <label>Tempo de Expiração do QR Code</label>
+                    <input type="number" value="5" min="1" max="60">
+                    <p class="helper-text">Tempo em minutos até que uma chave gerada pelo usuário se torne inválida.</p>
+                </div>
+
+                <h2 class="config-section-title" style="margin-top: 40px;">Hardware e Rede</h2>
+
+                <div class="form-group">
+                    <label>Endereço IP do Broker MQTT</label>
+                    <input type="text" value="192.168.1.100" placeholder="ex: 192.168.x.x">
+                    <p class="helper-text">Servidor central que comunica com as trancas ESP32.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Porta de Comunicação</label>
+                    <input type="number" value="1883">
+                </div>
+
+                <button class="btn-save">Salvar Alterações</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

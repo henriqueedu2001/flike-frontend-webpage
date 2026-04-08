@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Histórico | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        .top-bar {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 25px; max-width: 800px; margin: 0 auto; }
+
+        /* --- Lista de Histórico --- */
+        .history-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #ddd;
+        }
+
+        .history-info h4 { margin: 0; font-size: 1rem; color: var(--primary); }
+        .history-info span { font-size: 0.8rem; color: #888; }
+        
+        .history-status {
+            text-align: right;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .success-text { color: var(--success); }
+        .fail-text { color: var(--danger); }
+
+        .date-divider {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #999;
+            text-transform: uppercase;
+            margin: 25px 0 10px 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Botão Voltar (Mobile Friendly) */
+        .btn-back {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP-LOCK</strong><br>
+            <small>Portal do Usuário</small>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 Início</a>
+            <a href="user_history.html">📜 Meu Histórico</a>
+            <a href="user_profile.html">👤 Perfil</a>
+            <a href="help.html">❓ Ajuda</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="top-bar">
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <div style="font-weight: bold; font-size: 1.1rem;">Meu Histórico</div>
+            <a href="user_home.html" class="btn-back">Voltar</a>
+        </div>
+
+        <div class="content-padding">
+            
+            <div class="date-divider">Hoje - 08 de Abril</div>
+
+            <div class="history-card" style="border-left-color: var(--success);">
+                <div class="history-info">
+                    <h4>Sala de Amamentação</h4>
+                    <span>Prédio Histórico • 12:45</span>
+                </div>
+                <div class="history-status success-text">
+                    Entrada Autorizada
+                </div>
+            </div>
+
+            <div class="history-card" style="border-left-color: var(--danger);">
+                <div class="history-info">
+                    <h4>Regulação Sensorial</h4>
+                    <span>Prédio Histórico • 11:20</span>
+                </div>
+                <div class="history-status fail-text">
+                    QR Expirado
+                </div>
+            </div>
+
+            <div class="date-divider">Ontem - 07 de Abril</div>
+
+            <div class="history-card" style="border-left-color: var(--success);">
+                <div class="history-info">
+                    <h4>Sala de Estudos Pós</h4>
+                    <span>Edifício Paula Souza • 16:30</span>
+                </div>
+                <div class="history-status success-text">
+                    Entrada Autorizada
+                </div>
+            </div>
+
+            <div class="history-card" style="border-left-color: var(--success);">
+                <div class="history-info">
+                    <h4>Sala de Estudos Pós</h4>
+                    <span>Edifício Paula Souza • 14:15</span>
+                </div>
+                <div class="history-status success-text">
+                    Saída Registrada
+                </div>
+            </div>
+
+            <div class="history-card" style="border-left-color: var(--success);">
+                <div class="history-info">
+                    <h4>Sala de Estudos Pós</h4>
+                    <span>Edifício Paula Souza • 09:00</span>
+                </div>
+                <div class="history-status success-text">
+                    Entrada Autorizada
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

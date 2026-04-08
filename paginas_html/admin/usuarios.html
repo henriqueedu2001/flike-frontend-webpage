@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        /* --- Overlay --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Estilo da Tabela --- */
+        .table-container { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+            overflow-x: auto; 
+            margin-top: 20px;
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th { 
+            text-align: left; 
+            padding: 18px 20px; 
+            background: #f8f9fa; 
+            color: #666; 
+            font-size: 0.8rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td { padding: 18px 20px; border-top: 1px solid #eee; font-size: 0.9rem; color: #333; }
+        
+        tr:hover { background-color: #fafafa; }
+
+        .btn-action { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .btn-action:hover { opacity: 0.9; }
+
+        .tag-status { 
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            background: #e8f5e9; 
+            color: #2e7d32; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP Admin</strong><br>
+            <small>Gestão de Acessos</small>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="usuarios.html">👥 Usuários</a>
+            <a href="predios.html">🏛️ Prédios</a>
+            <a href="logs.html">🔑 Chaves Antigas</a>
+            <a href="config.html">⚙️ Configurações</a>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <h1 style="margin: 0; font-size: 1.15rem;">Gestão de Usuários</h1>
+        </header>
+
+        <div class="content-padding">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 1.4rem; color: var(--primary); margin: 0;">Usuários Cadastrados</h2>
+                <button class="btn-action" style="background: var(--success);">+ Novo Usuário</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NOME COMPLETO</th>
+                            <th>Nº USP</th>
+                            <th>VÍNCULO</th>
+                            <th>STATUS</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Henrique S. Souza</td>
+                            <td>12345678</td>
+                            <td>SanFran - Aluno</td>
+                            <td><span class="tag-status">ATIVO</span></td>
+                            <td><button class="btn-action">Ver Documentos</button></td>
+                        </tr>
+                        <tr>
+                            <td>Ana Beatriz Rocha</td>
+                            <td>87654321</td>
+                            <td>SanFran - Aluna</td>
+                            <td><span class="tag-status">ATIVO</span></td>
+                            <td><button class="btn-action">Ver Documentos</button></td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Eduardo Lima</td>
+                            <td>11223344</td>
+                            <td>SanFran - Docente</td>
+                            <td><span class="tag-status" style="background:#fff3e0; color:#ef6c00;">PENDENTE</span></td>
+                            <td><button class="btn-action">Validar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

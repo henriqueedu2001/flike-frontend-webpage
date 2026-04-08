@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        .top-bar {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 25px; max-width: 800px; margin: 0 auto; }
+
+        /* --- Boas-vindas --- */
+        .welcome-section { margin-bottom: 30px; }
+        .welcome-section h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
+        .welcome-section p { color: #666; margin-top: 5px; }
+
+        /* --- Cards de Acesso Rápido --- */
+        .access-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 5px solid var(--success);
+            transition: transform 0.2s;
+        }
+
+        .access-card:active { transform: scale(0.98); }
+
+        .room-details h3 { margin: 0; font-size: 1.1rem; color: var(--primary); }
+        .room-details span { font-size: 0.85rem; color: #888; display: block; margin-top: 4px; }
+
+        .btn-generate {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Mensagem Informativa */
+        .info-box {
+            background: #e1f5fe;
+            color: #0277bd;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP-LOCK</strong><br>
+            <small>Portal do Usuário</small>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 Início</a>
+            <a href="user_history.html">📜 Meu Histórico</a>
+            <a href="user_profile.html">👤 Perfil</a>
+            <a href="help.html">❓ Ajuda</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="top-bar">
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <div style="font-weight: bold; font-size: 1.1rem;">Início</div>
+        </div>
+
+        <div class="content-padding">
+            <section class="welcome-section">
+                <h1>Olá, Henrique! 👋</h1>
+                <p>Selecione uma sala para gerar sua chave de acesso.</p>
+            </section>
+
+            <div class="info-box">
+                <span>ℹ️</span>
+                <span>As chaves geradas expiram em <strong>5 minutos</strong> após a criação.</span>
+            </div>
+
+            <h2 style="font-size: 1rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">Salas Disponíveis</h2>
+
+            <div class="access-card">
+                <div class="room-details">
+                    <h3>Sala de Amamentação</h3>
+                    <span>Prédio Histórico - Térreo</span>
+                </div>
+                <button class="btn-generate" onclick="location.href='gerar_qr.html'">
+                    <span>Gerar QR</span>
+                </button>
+            </div>
+
+            <div class="access-card">
+                <div class="room-details">
+                    <h3>Regulação Sensorial</h3>
+                    <span>Prédio Histórico - 1º Andar</span>
+                </div>
+                <button class="btn-generate" onclick="location.href='gerar_qr.html'">
+                    <span>Gerar QR</span>
+                </button>
+            </div>
+
+            <div class="access-card">
+                <div class="room-details">
+                    <h3>Sala de Estudos Pós</h3>
+                    <span>Edifício Paula Souza - 3º Andar</span>
+                </div>
+                <button class="btn-generate" onclick="location.href='gerar_qr.html'">
+                    <span>Gerar QR</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

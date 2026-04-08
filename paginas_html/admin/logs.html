@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        /* --- Overlay --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Barra de Filtros --- */
+        .filter-bar { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 25px; 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+
+        .filter-bar span { font-weight: 600; color: #666; font-size: 0.9rem; }
+
+        input[type="date"], select { 
+            padding: 10px 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            font-family: inherit;
+            color: var(--primary);
+            outline: none;
+        }
+
+        input[type="date"]:focus, select:focus { border-color: var(--primary); }
+
+        /* --- Tabela de Histórico --- */
+        .table-container { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            overflow-x: auto; 
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { 
+            text-align: left; 
+            padding: 18px 20px; 
+            background: #f8f9fa; 
+            color: #666; 
+            font-size: 0.8rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #edf2f7;
+        }
+        td { padding: 18px 20px; border-bottom: 1px solid #eee; font-size: 0.9rem; color: #444; }
+        
+        tr:hover { background-color: #fafafa; }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .success { background: #e8f5e9; color: #2e7d32; }
+        .fail { background: #ffebee; color: #c62828; }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP Admin</strong><br>
+            <small>Auditoria</small>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="usuarios.html">👥 Usuários</a>
+            <a href="predios.html">🏛️ Prédios</a>
+            <a href="logs.html">🔑 Chaves Antigas</a>
+            <a href="config.html">⚙️ Configurações</a>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <h1 style="margin: 0; font-size: 1.15rem;">Histórico de Acessos</h1>
+        </header>
+
+        <div class="content-padding">
+            
+            <div class="filter-bar">
+                <span>Filtrar por:</span>
+                <input type="date" value="2026-04-08">
+                <select>
+                    <option value="">Todas as salas</option>
+                    <option value="1">Sala de Amamentação</option>
+                    <option value="2">Regulação Sensorial</option>
+                </select>
+                <select>
+                    <option value="">Todos os Prédios</option>
+                    <option value="sf">Prédio Histórico</option>
+                    <option value="ps">Paula Souza</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DATA / HORA</th>
+                            <th>USUÁRIO</th>
+                            <th>PRÉDIO / SALA</th>
+                            <th>TIPO</th>
+                            <th>RESULTADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>08/04/2026 - 12:45</td>
+                            <td><strong>Henrique S. Souza</strong></td>
+                            <td>Histórico - Amamentação</td>
+                            <td>Entrada</td>
+                            <td><span class="status-badge success">SUCESSO</span></td>
+                        </tr>
+                        <tr>
+                            <td>08/04/2026 - 11:20</td>
+                            <td><strong>Juliana Lima</strong></td>
+                            <td>Histórico - Sensorial</td>
+                            <td>Entrada</td>
+                            <td><span class="status-badge fail">QR EXPIRADO</span></td>
+                        </tr>
+                        <tr>
+                            <td>08/04/2026 - 09:15</td>
+                            <td><strong>Carlos Eduardo</strong></td>
+                            <td>Paula Souza - Estudos</td>
+                            <td>Entrada</td>
+                            <td><span class="status-badge success">SUCESSO</span></td>
+                        </tr>
+                        <tr>
+                            <td>07/04/2026 - 17:30</td>
+                            <td><strong>Ana Beatriz</strong></td>
+                            <td>Histórico - Amamentação</td>
+                            <td>Saída</td>
+                            <td><span class="status-badge success">SUCESSO</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.none = "block"; 
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

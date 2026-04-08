@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuda | CAUSP-LOCK</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --info: #3498db;
+            --bg: #f4f7f9;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            background: var(--bg); 
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        nav { 
+            width: 0; 
+            background: var(--primary); 
+            color: white; 
+            height: 100vh; 
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header { padding: 30px 20px; background: rgba(0,0,0,0.2); white-space: nowrap; }
+        .nav-links { padding: 20px 0; flex-grow: 1; }
+        .nav-links a {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999; top: 0; left: 0;
+        }
+
+        /* --- Conteúdo Principal --- */
+        main { flex: 1; width: 100%; }
+
+        .top-bar {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 24px; cursor: pointer; }
+
+        .content-padding { padding: 25px; max-width: 800px; margin: 0 auto; }
+
+        /* --- FAQ & Suporte --- */
+        .help-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .help-header {
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .help-header h2 { margin: 0; color: var(--primary); font-size: 1.4rem; }
+
+        .faq-item {
+            margin-bottom: 25px;
+        }
+
+        .faq-item h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            padding-left: 30px;
+        }
+
+        .contact-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact-box p { margin: 0 0 15px 0; font-weight: 500; }
+
+        .btn-email {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-email:hover { background: #1a252f; }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+    <nav id="mySidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <div class="nav-header">
+            <strong>CAUSP-LOCK</strong><br>
+            <small>Portal do Usuário</small>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 Início</a>
+            <a href="user_history.html">📜 Meu Histórico</a>
+            <a href="user_profile.html">👤 Perfil</a>
+            <a href="help.html">❓ Ajuda</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="top-bar">
+            <div class="menu-icon" onclick="openNav()">☰</div>
+            <div style="font-weight: bold; font-size: 1.1rem;">Central de Ajuda</div>
+        </div>
+
+        <div class="content-padding">
+            <div class="help-container">
+                <div class="help-header">
+                    <h2>Dúvidas Frequentes</h2>
+                </div>
+
+                <div class="faq-item">
+                    <h3><span>🔑</span> Como utilizo o sistema?</h3>
+                    <p>Na página de <strong>Início</strong>, você verá as salas disponíveis para o seu perfil. Clique em "Gerar QR" e aponte o código para o leitor da porta.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3><span>⏳</span> Por quanto tempo o QR Code vale?</h3>
+                    <p>Cada código gerado é válido por apenas 5 minutos. Se o tempo esgotar antes de você abrir a porta, basta gerar um novo código.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3><span>🚫</span> Acesso Negado: O que fazer?</h3>
+                    <p>Verifique se você está na sala correta e se o QR Code ainda está dentro do tempo de validade. Se o problema persistir, sua permissão pode ter expirado.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3><span>📱</span> O QR Code não carrega.</h3>
+                    <p>Certifique-se de que você possui uma conexão estável com a internet (Wi-Fi da USP ou rede móvel) para que o servidor valide sua chave.</p>
+                </div>
+
+                <div class="contact-box">
+                    <p>Ainda precisa de auxílio técnico?</p>
+                    <a href="mailto:suporte.infra@usp.br" class="btn-email">Falar com Suporte</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "var(--sidebar-width)";
+            document.getElementById("overlay").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>
