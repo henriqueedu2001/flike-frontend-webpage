@@ -76,6 +76,114 @@
 
 html,
 body {
+  font-family: 'Inter', 'Segoe UI', sans-serif; 
   margin: 0;
   padding: 0;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th {
+  text-align: left;
+  padding: 18px 20px;
+  background: #f8f9fa;
+  color: #666;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #edf2f7;
+}
+
+.table-container td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.table-container tr:hover {
+  background-color: #fafafa;
+}
+
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.page-title h2 {
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin: 0;
+}
+
+.btn-action {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-action.success {
+  background: green;
+  color: white; 
+  border: none; 
+  padding: 8px 16px; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 18px 20px;
+  background: #f8f9fa;
+  color: #666;
+  font-size: .8rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid #edf2f7;
+}
+
+td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #fafafa;
+}
+
+.page-title {
+  margin-bottom: 15px;
+}
+
+.page-title h2 {
+  color: var(--primary);
 }
