@@ -46,7 +46,7 @@ export default function AdminSidebar({
     <>
       {isOpen && (
         <div
-          className="overlay"
+          className="overlay-sidebar"
           onClick={onClose}
         />
       )}
