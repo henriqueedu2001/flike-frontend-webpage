@@ -122,6 +122,11 @@ body {
   margin: 20px;
 }
 
+.top-bar-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .page-title h2 {
   font-size: 1.4rem;
   color: var(--primary);
@@ -303,4 +308,98 @@ tr:hover {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+/* Label dos campos */
+.modal-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Campos de entrada */
+.modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  background-color: #fff;
+  color: #111827;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Container dos botões */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Botão Cancelar */
+.modal-cancel {
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #dc2626;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.modal-cancel:hover {
+  background-color: #b91c1c;
+}
+
+/* Botão Salvar */
+.modal-save {
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #16a34a;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.modal-save:hover {
+  background-color: #15803d;
+}
+
+.modal-save:disabled,
+.modal-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

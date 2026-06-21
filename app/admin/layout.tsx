@@ -24,7 +24,7 @@ export default function AdminLayout({
 
       <main>
         <div className="top-bar">
-          <div className="top-bar-left">
+          <div className="top-bar-div">
             <div
               className="menu-icon"
               onClick={() =>
@@ -35,7 +35,7 @@ export default function AdminLayout({
             </div>
 
             <div className="page-title">
-              {title}
+              <h1 className="text-3xl font-bold">CAUSP-LOCK ADMIN</h1>
             </div>
           </div>
         </div>
