@@ -26,10 +26,10 @@ export default function GlobalModal({
   if (!isOpen || !type) return null;
 
   const endpoints: Record<ModalType, string> = {
-    user: "http://127.0.0.1:8000/user/new",
-    institution: "http://127.0.0.1:8000/institution/new",
-    building: "http://127.0.0.1:8000/building/new",
-    room: "http://127.0.0.1:8000/room/new",
+    user:  `${process.env.NEXT_PUBLIC_API_URL}/user/new`,
+    institution: `${process.env.NEXT_PUBLIC_API_URL}/institution/new`,
+    building: `${process.env.NEXT_PUBLIC_API_URL}/building/new`,
+    room: `${process.env.NEXT_PUBLIC_API_URL}/room/new`,
   };
 
   const labels: Record<ModalType, string> = {

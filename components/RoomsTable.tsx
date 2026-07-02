@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-interface Room {
+export interface Room {
   id: number;
   building_id: number;
   name: string;
@@ -10,15 +8,13 @@ interface Room {
   created_at: string;
 }
 
-export default function RoomsTable() {
-  const [rooms, setRooms] = useState<Room[]>([]);
+interface RoomsTableProps {
+  rooms: Room[];
+}
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/room/all")
-      .then((res) => res.json())
-      .then(setRooms);
-  }, []);
-
+export default function RoomsTable({
+  rooms,
+}: RoomsTableProps) {
   return (
     <div className="table-container">
       <table>
@@ -36,15 +32,17 @@ export default function RoomsTable() {
           {rooms.map((room) => (
             <tr key={room.id}>
               <td>{room.id}</td>
+
               <td>
                 <strong>{room.name}</strong>
               </td>
+
               <td>{room.number}</td>
+
               <td>{room.building_id}</td>
+
               <td>
-                {new Date(
-                  room.created_at
-                ).toLocaleString("pt-BR")}
+                {new Date(room.created_at).toLocaleString("pt-BR")}
               </td>
             </tr>
           ))}

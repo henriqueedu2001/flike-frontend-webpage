@@ -1,60 +1,71 @@
 "use client";
 
+import { useState } from "react";
+
+import { useAdminData } from "@/hooks/useAdminData";
+import AdminSection from "@/components/admin/AdminSection";
+import GlobalModal from "@/components/GlobalModal";
 import InstitutionsTable from "@/components/InstitutionsTable";
 import BuildingsTable from "@/components/BuildingsTable";
 import RoomsTable from "@/components/RoomsTable";
 
-import { useState } from "react";
-import GlobalModal from "@/components/GlobalModal";
+type ModalType = "user" | "institution" | "building" | "room";
 
 export default function Page() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<
-    "user" | "institution" | "building" | "room" | null
-  >(null);
+  const [modalType, setModalType] = useState<ModalType | null>(null);
+
+  const {
+    institutions,
+    buildings,
+    rooms,
+    refresh,
+  } = useAdminData();
+
+  function openModal(type: ModalType) {
+    setModalType(type);
+    setModalOpen(true);
+  }
+
   return (
     <main className="p-6">
-      <div className= "page-margin">
-        <h1 className="text-3xl font-bold">Painel Administrativo</h1>
+      <div className="page-margin">
+        <h1 className="text-3xl font-bold">
+          Painel Administrativo
+        </h1>
+
         <div className="content-padding">
+          <AdminSection
+              title="Instituições"
+              buttonText="+ Nova Instituição"
+              onClick={() => openModal("institution")}
+          >
+              <InstitutionsTable institutions={institutions} />
+          </AdminSection>
 
-          <div className="page-title">
-            <h2>Instituições</h2>
-            <button className="btn-action success" onClick={() => { setModalType("institution"); setModalOpen(true); }}>
-              + Nova Instituição
-            </button>
-          </div>
+          <AdminSection
+              title="Prédios"
+              buttonText="+ Novo Prédio"
+              onClick={() => openModal("building")}
+          >
+              <BuildingsTable buildings={buildings} />
+          </AdminSection>
 
-          <InstitutionsTable />
+          <AdminSection
+              title="Salas"
+              buttonText="+ Nova Sala"
+              onClick={() => openModal("room")}
+          >
+              <RoomsTable rooms={rooms} />
+          </AdminSection>
 
-          <div style={{ height: "30px" }} />
-
-          <div className="page-title">
-            <h2>Prédios</h2>
-            <button className="btn-action success"  onClick={() => { setModalType("building"); setModalOpen(true); }}>
-              + Novo Prédio
-            </button>
-          </div>
-
-          <BuildingsTable />
-
-          <div style={{ height: "30px" }} />
-
-          <div className="page-title">
-            <h2>Salas</h2>
-            <button className="btn-action success" onClick={() => { setModalType("room"); setModalOpen(true); }}>
-              + Nova Sala 
-            </button>
-          </div>
-
-          <RoomsTable />
-          {/* MODAL GLOBAL */}
           <GlobalModal
             isOpen={modalOpen}
             type={modalType}
             onClose={() => setModalOpen(false)}
-            onSuccess={() => window.location.reload()}
+            onSuccess={refresh}
           />
+
         </div>
       </div>
     </main>

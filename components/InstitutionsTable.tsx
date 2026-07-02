@@ -1,23 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-interface Institution {
+export interface Institution {
   id: number;
   owner_id: number;
   name: string;
   created_at: string;
 }
 
-export default function InstitutionsTable() {
-  const [institutions, setInstitutions] = useState<Institution[]>([]);
+interface InstitutionsTableProps {
+  institutions: Institution[];
+}
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/institution/all")
-      .then((res) => res.json())
-      .then(setInstitutions);
-  }, []);
-
+export default function InstitutionsTable({
+  institutions,
+}: InstitutionsTableProps) {
   return (
     <div className="table-container">
       <table>
@@ -34,14 +30,15 @@ export default function InstitutionsTable() {
           {institutions.map((institution) => (
             <tr key={institution.id}>
               <td>{institution.id}</td>
+
               <td>
                 <strong>{institution.name}</strong>
               </td>
+
               <td>{institution.owner_id}</td>
+
               <td>
-                {new Date(
-                  institution.created_at
-                ).toLocaleString("pt-BR")}
+                {new Date(institution.created_at).toLocaleString("pt-BR")}
               </td>
             </tr>
           ))}

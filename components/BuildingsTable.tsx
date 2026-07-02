@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-interface Building {
+export interface Building {
   id: number;
   institution_id: number;
   name: string;
@@ -11,15 +9,13 @@ interface Building {
   created_at: string;
 }
 
-export default function BuildingsTable() {
-  const [buildings, setBuildings] = useState<Building[]>([]);
+interface BuildingsTableProps {
+  buildings: Building[];
+}
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/building/all")
-      .then((res) => res.json())
-      .then(setBuildings);
-  }, []);
-
+export default function BuildingsTable({
+  buildings,
+}: BuildingsTableProps) {
   return (
     <div className="table-container">
       <table>
@@ -30,6 +26,7 @@ export default function BuildingsTable() {
             <th>Instituição</th>
             <th>Cidade</th>
             <th>Estado</th>
+            <th>Criado em</th>
           </tr>
         </thead>
 
@@ -37,12 +34,20 @@ export default function BuildingsTable() {
           {buildings.map((building) => (
             <tr key={building.id}>
               <td>{building.id}</td>
+
               <td>
                 <strong>{building.name}</strong>
               </td>
+
               <td>{building.institution_id}</td>
+
               <td>{building.city}</td>
+
               <td>{building.state}</td>
+
+              <td>
+                {new Date(building.created_at).toLocaleString("pt-BR")}
+              </td>
             </tr>
           ))}
         </tbody>
