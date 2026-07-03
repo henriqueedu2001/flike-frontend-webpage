@@ -35,7 +35,7 @@ export default function AdminLayout({
             </div>
 
             <div className="page-title">
-              <h1 className="text-3xl font-bold">CAUSP-LOCK ADMIN</h1>
+              <h1 className="text-3xl font-bold">FLIKE - ADMIN</h1>
             </div>
           </div>
         </div>
