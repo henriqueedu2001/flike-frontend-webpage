@@ -6,12 +6,9 @@
 4. **Dashboard do Cliente** – Visão geral das chaves ativas e atalho para solicitar acesso.
 5. **Busca e Solicitação de Acesso** – Localização hierárquica de salas e emissão de chave digital.
 6. **Tela de Acesso (QR Code)** – Exibição do QR Code para leitura na fechadura.
-7. **Histórico do Cliente** – Registro das tentativas de acesso do usuário logado.
-8. **Dashboard do Administrador** – Painel estatístico e atalhos para gestão do sistema.
-9. **Gestão de Infraestrutura** – CRUD de instituições, edifícios, salas e fechaduras.
-10. **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes.
-11. **Log Completo do Sistema** – Auditoria de todos os eventos de todas as fechaduras.
-12. **Perfil e Configurações** – Alteração de dados pessoais e preferências de acessibilidade.
+7. **Dashboard do Administrador** – CRUD de instituições, edifícios, salas e fechaduras.
+8. **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes.
+9. **Perfil e Configurações** – Alteração de dados pessoais e preferências de acessibilidade.
 
 ---
 
@@ -59,7 +56,7 @@
 - **Descrição geral**: Permite ao cliente encontrar uma sala por busca textual ou navegação hierárquica (Instituição > Edifício > Sala) e solicitar a chave em 2 cliques.
 - **Funcionalidades/Proposta**: Campo de busca com autocompletar. Ao selecionar a sala, exibe detalhes e botão "Solicitar Chave". Após a solicitação, redireciona para `/acesso/{nova_key_id}`.
 - **Endpoints Sugeridos**:
-  - `GET /search?q={texto}` – Busca global por nome de instituição, edifício ou sala.
+  - `GET /search?q={texto}&type{institution/building/room}` – Busca por nome, para buscar instituição, edifício ou sala.
   - `GET /institutions` – Lista todas as instituições.
   - `GET /buildings?institution_id={id}` – Lista edifícios de uma instituição.
   - `GET /rooms?building_id={id}` – Lista salas de um edifício (com o `digital_lock_id` associado).
@@ -77,28 +74,9 @@
 
 ---
 
-### 7. Histórico do Cliente (client_history_page)
-- **URL**: `/historico`
-- **Descrição geral**: Tabela com todas as tentativas de acesso do usuário logado.
-- **Funcionalidades/Proposta**: Colunas: Data/Hora, Sala, Tipo (abertura/tentativa inválida), Sucesso (sim/não) e Detalhes (motivo da falha). Filtros por período e status.
-- **Endpoints Sugeridos**:
-  - `GET /user/history` – Retorna lista de `EventLog` filtrados pelo `user_id` (via token), com dados da `DigitalLock` e `Room`.
-
----
-
-### 8. Dashboard do Administrador (admin_dashboard)
-- **URL**: `/admin`
-- **Descrição geral**: Painel de controle com estatísticas gerais e atalhos para as funções de gestão.
-- **Funcionalidades/Proposta**: Cards com totais (salas, fechaduras ativas, chaves emitidas no dia, taxa de sucesso). Feed com os últimos eventos (atualizável via botão). Acesso rápido a `/admin/infra`, `/admin/usuarios` e `/admin/logs`.
-- **Endpoints Sugeridos**:
-  - `GET /admin/stats` – Retorna métricas (total de locks, keys emitidas hoje, sucess rate, etc.).
-  - `GET /admin/recent-events?limit=10` – Retorna os últimos `EventLog`.
-
----
-
-### 9. Gestão de Infraestrutura (infra_management_page)
+### 7. Dashboard do Administrador (admin_dashboard)
 - **URL**: `/admin/infra`
-- **Descrição geral**: Interface para CRUD (criar, listar, editar, deletar) de Instituições, Edifícios, Salas e Fechaduras.
+- **Descrição geral**: Interface para CRUD (criar, listar, editar, deletar) de Instituições, Edifícios, Salas e Fechaduras. Visualização de métricas das salas. Visualização dos logs das trancas.
 - **Funcionalidades/Proposta**: Organizada em abas ou steps hierárquicos. Formulários com campos correspondentes ao modelo de dados (ex: `address_line_1`, `city` para edifícios; `status` e `secret_key` para fechaduras).
 - **Endpoints Sugeridos**:
   - **Instituições**: `GET /admin/institutions`, `POST /admin/institutions`, `PUT /admin/institutions/{id}`, `DELETE /admin/institutions/{id}`.
@@ -108,28 +86,16 @@
 
 ---
 
-### 10. Gestão de Usuários e Chaves (user_key_management_page)
-- **URL**: `/admin/usuarios`
-- **Descrição geral**: Lista de todos os usuários cadastrados e emissão/revogação manual de chaves.
-- **Funcionalidades/Proposta**: Busca por usuário. Ao selecionar um cliente, o admin pode emitir uma chave para uma fechadura específica (com expiração personalizável) ou revogar uma chave ativa.
+### 8. Gestão de Chaves (keys_management_page)
+- **URL**: `/admin/keys`
+- **Descrição geral**: Dashboard com a administração das chaves, tanto emissão para usuários específicos, quanto aceitação/rejeição de pedidos de acesso.
+- **Funcionalidades/Proposta**: Visualização dos pedidos de acesso, aceitação/rejeição de pedidos, emissão de chaves para um cliente.
 - **Endpoints Sugeridos**:
-  - `GET /admin/users` – Lista todos os usuários (com `type`).
-  - `GET /admin/users/{id}/keys` – Lista chaves ativas de um usuário específico.
   - `POST /admin/keys/issue` – Recebe `user_id`, `lock_id`, `expires_at` (opcional); retorna chave criada.
-  - `DELETE /admin/keys/revoke/{key_id}` – Revoga (marca como used ou deleta logicamente) a chave.
 
 ---
 
-### 11. Log Completo do Sistema (system_log_page)
-- **URL**: `/admin/logs`
-- **Descrição geral**: Auditoria completa contendo todos os registros de `EventLog` de todas as fechaduras.
-- **Funcionalidades/Proposta**: Tabela com colunas: ID, Fechadura, Tipo, Log (texto), Timestamp. Filtros por fechadura específica, tipo de evento e intervalo de datas.
-- **Endpoints Sugeridos**:
-  - `GET /admin/eventlogs` – Lista todos os logs, com suporte a query params `lock_id`, `type`, `start_date`, `end_date`, `limit`, `offset`.
-
----
-
-### 12. Perfil e Configurações (profile_page)
+### 9. Perfil e Configurações (profile_page)
 - **URL**: `/perfil`
 - **Descrição geral**: Exibição e edição dos dados do usuário logado (nome, e-mail, alteração de senha).
 - **Funcionalidades/Proposta**: Para administradores, opção de "Alternar para visualização de cliente" (útil para testes). Preferências de acessibilidade (ex: modo de alto contraste) são ajustadas aqui.
