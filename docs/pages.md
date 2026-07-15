@@ -1,14 +1,14 @@
 ## Lista de Páginas (Resumo)
 
-1. **Página Inicial** – Apresentação institucional e portal para login/cadastro.
-2. **Login** – Autenticação de usuários existentes.
-3. **Cadastro** – Criação de nova conta de usuário.
-4. **Dashboard do Cliente** – Visão geral das chaves ativas e atalho para solicitar acesso.
-5. **Busca e Solicitação de Acesso** – Localização hierárquica de salas e emissão de chave digital.
-6. **Tela de Acesso (QR Code)** – Exibição do QR Code para leitura na fechadura.
-7. **Dashboard do Administrador** – CRUD de instituições, edifícios, salas e fechaduras.
-8. **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes.
-9. **Perfil e Configurações** – Alteração de dados pessoais e preferências de acessibilidade.
+1. [X] **Página Inicial** – Apresentação institucional e portal para login/cadastro.
+2. [X] **Login** – Autenticação de usuários existentes.
+3. [X] **Cadastro** – Criação de nova conta de usuário.
+4. [ ] **Dashboard do Cliente** – Visão geral das chaves ativas e atalho para solicitar acesso.
+5. [ ] **Busca e Solicitação de Acesso** – Localização hierárquica de salas e emissão de chave digital.
+6. [ ] **Tela de Acesso (QR Code)** – Exibição do QR Code para leitura na fechadura.
+7. [ ] **Dashboard do Administrador** – CRUD de instituições, edifícios, salas e fechaduras.
+8. [ ] **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes.
+9. [ ] **Perfil e Configurações** – Alteração de dados pessoais e preferências de acessibilidade.
 
 ---
 
@@ -28,7 +28,7 @@
 - **Descrição geral**: Formulário para autenticação de usuários com e-mail e senha.
 - **Funcionalidades/Proposta**: Redireciona para `/dashboard` (cliente) ou `/admin` (administrador) conforme o `type` do usuário. Possui link para recuperação de senha.
 - **Endpoints Sugeridos**:
-  - `POST /auth/login` – Recebe `email` e `password`; retorna `access_token` (JWT) e `user_type`.
+  - `POST /auth/user` – Recebe `email` e `password`; retorna `access_token` (JWT).
 
 ---
 
@@ -37,7 +37,7 @@
 - **Descrição geral**: Formulário para criação de nova conta (nome, e-mail, senha, confirmação de senha).
 - **Funcionalidades/Proposta**: Após o cadastro, o usuário é redirecionado para o login. Por padrão, todo novo usuário nasce como "cliente".
 - **Endpoints Sugeridos**:
-  - `POST /auth/signup` – Recebe `name`, `email`, `password`; retorna `id` do usuário criado.
+  - `POST /user/new` – Recebe `name`, `email`, `password`; retorna `id` do usuário criado.
 
 ---
 
@@ -46,31 +46,30 @@
 - **Descrição geral**: Tela principal do usuário final. Exibe as chaves digitais ativas em cards e um botão de destaque para solicitar novo acesso.
 - **Funcionalidades/Proposta**: Cada card mostra Sala, Prédio, status ("Pronta para uso" / "Já utilizada") e horário de expiração. Ao clicar na chave, redireciona para `/acesso/{key_id}`.
 - **Endpoints Sugeridos**:
-  - `GET /user/me` – Retorna dados do usuário logado.
-  - `GET /user/keys/active` – Lista todas as `DigitalKey` ativas do usuário (com dados da `Room` e `Building` aninhados).
+  - `GET /user?id={id}` – Retorna dados do usuário logado.
+  - `GET /digital_key?id={id}` – Lista todas as chaves digitais do usuário.
 
 ---
 
 ### 5. Busca e Solicitação de Acesso (search_request_page)
-- **URL**: `/solicitar`
-- **Descrição geral**: Permite ao cliente encontrar uma sala por busca textual ou navegação hierárquica (Instituição > Edifício > Sala) e solicitar a chave em 2 cliques.
+- **URL**: `/acesso/solicitar`
+- **Descrição geral**: Permite ao cliente encontrar uma sala por busca textual ou navegação hierárquica (Instituição > Edifício > Sala) e solicitar a chave.
 - **Funcionalidades/Proposta**: Campo de busca com autocompletar. Ao selecionar a sala, exibe detalhes e botão "Solicitar Chave". Após a solicitação, redireciona para `/acesso/{nova_key_id}`.
 - **Endpoints Sugeridos**:
-  - `GET /search?q={texto}&type{institution/building/room}` – Busca por nome, para buscar instituição, edifício ou sala.
-  - `GET /institutions` – Lista todas as instituições.
-  - `GET /buildings?institution_id={id}` – Lista edifícios de uma instituição.
-  - `GET /rooms?building_id={id}` – Lista salas de um edifício (com o `digital_lock_id` associado).
-  - `POST /key/request` – Recebe `user_id` (do token) e `lock_id`; retorna a `DigitalKey` criada (com `id`, `expiration`, `payload`).
+  - `GET /institutions/search?q={query}` – Lista instituições compatíveis com uma query.
+  - `GET /buildings/search?q={query}` – Lista edifícios de uma instituição compatíveis com uma query.
+  - `GET /rooms/search?q={query}` – Lista salas de um edifício compatíveis com uma query.
+  - `GET /digital_lock?room_id={room_id}` – Lista as trancas de um edifício. Na maioria dos casos, há somente uma tranca.
+  - `POST /digital_key/request` – Recebe `user_id` (do token) e `lock_id`; cria uma request para o administrador do espaço.
 
 ---
 
 ### 6. Tela de Acesso (access_page)
 - **URL**: `/acesso/{key_id}`
 - **Descrição geral**: Exibição do QR Code gigante e do código alfanumérico para leitura na câmera da fechadura (ESP32-CAM).
-- **Funcionalidades/Proposta**: Mostra dados da sala, horário de expiração e status (válido/já usado). Fundo branco puro para facilitar a leitura ótica. Botão "Atualizar" para reexibir o QR.
+- **Funcionalidades/Proposta**: Mostra dados da sala, horário de expiração e status (válido/já usado). Fundo branco puro para facilitar a leitura ótica.
 - **Endpoints Sugeridos**:
-  - `GET /key/{id}` – Retorna os dados da chave (`payload` para gerar o QR Code, `expires_at`, `used`, e dados da `Room/Lock`).
-  - `GET /key/{id}/status` – Verifica se a chave ainda é válida (usado para atualização em tempo real, se necessário).
+  - `GET /digital_key?key_id={key_id}` – Retorna os dados da chave (`payload` para gerar o QR Code, `expires_at`, `used`, e dados da `Room/Lock`).
 
 ---
 
