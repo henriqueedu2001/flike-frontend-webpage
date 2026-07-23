@@ -29,7 +29,7 @@ export default function Page() {
     <main className="p-6">
       <div className="page-margin">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-
+        <h2>Chaves ativas</h2>
         <div className="content-padding">
           {loading && <p>Carregando...</p>}
 

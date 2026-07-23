@@ -8,7 +8,7 @@ interface Props {
   onClose: () => void;
 }
 
-export default function AdminSidebar({
+export default function SideBar({
   isOpen,
   onClose,
 }: Props) {
@@ -16,28 +16,33 @@ export default function AdminSidebar({
 
   const links = [
     {
-      label: "Dashboard",
+      label: "Dashboard usuário",
+      href: "/dashboard",
+      icon: "📊",
+    },
+    {
+      label: "Solicitar acesso",
+      href: "/access/request",
+      icon: "📊",
+    },
+    {
+      label: "Dashboard do Administrador",
       href: "/admin/dashboard",
       icon: "📊",
     },
     {
+      label: "Gestão de Chaves",
+      href: "/admin/keys",
+      icon: "📊",
+    },
+    {
       label: "Usuários",
-      href: "/admin/users",
+      href: "/users",
       icon: "👥",
     },
     {
-      label: "Salas",
-      href: "/admin/rooms",
-      icon: "🚪",
-    },
-    {
-      label: "Histórico",
-      href: "/admin/logs",
-      icon: "📜",
-    },
-    {
       label: "Configurações",
-      href: "/admin/settings",
+      href: "/profile",
       icon: "⚙️",
     },
   ];

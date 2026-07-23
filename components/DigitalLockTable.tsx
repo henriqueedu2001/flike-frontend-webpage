@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { DigitalLock } from "@/types/digitalLock";
+
 interface DigitalLockTableProps {
   digitalLocks: DigitalLock[];
 }
@@ -8,6 +10,8 @@ interface DigitalLockTableProps {
 export default function DigitalLockTable({
   digitalLocks = [],
 }: DigitalLockTableProps) {
+  const router = useRouter();
+
   return (
     <div className="table-container">
       <table>
@@ -27,8 +31,13 @@ export default function DigitalLockTable({
               <td>{digitalLock.room_id}</td>
 
               <td>
-                <button  className="btn-action success"> 
-                  + Nova chave
+                <button
+                  className="btn-action success"
+                  onClick={() =>
+                    router.push(`/access/${digitalLock.id}`)
+                  }
+                >
+                  Visualizar chave
                 </button>
               </td>
             </tr>

@@ -15,7 +15,7 @@
 ## Detalhamento por Página
 
 ### 1. Página Inicial (landing_page)
-- **URL**: `/`
+- **URL**: `/s`
 - **Descrição geral**: Porta de entrada pública do sistema. Apresenta o propósito do FLIKE, a localização (Faculdade de Direito da USP) e os botões de navegação para login e cadastro.
 - **Funcionalidades/Proposta**: Sem distrações (sem animações, vídeos ou pop-ups). Informações estáticas e objetivas sobre o espaço de amamentação/regulação sensorial.
 - **Endpoints Sugeridos**:
@@ -44,7 +44,7 @@
 ### 4. Dashboard do Cliente (client_dashboard)
 - **URL**: `/dashboard`
 - **Descrição geral**: Tela principal do usuário final. Exibe as chaves digitais ativas em cards e um botão de destaque para solicitar novo acesso.
-- **Funcionalidades/Proposta**: Cada card mostra Sala, Prédio, status ("Pronta para uso" / "Já utilizada") e horário de expiração. Ao clicar na chave, redireciona para `/acesso/{key_id}`.
+- **Funcionalidades/Proposta**: Cada card mostra Sala, Prédio, status ("Pronta para uso" / "Já utilizada") e horário de expiração. Ao clicar na chave, redireciona para `/access/{key_id}`.
 - **Endpoints Sugeridos**:
   - `GET /user?id={id}` – Retorna dados do usuário logado.
   - `GET /digital_key?id={id}` – Lista todas as chaves digitais do usuário.
@@ -52,9 +52,9 @@
 ---
 
 ### 5. Busca e Solicitação de Acesso (search_request_page)
-- **URL**: `/acesso/solicitar`
+- **URL**: `/access/request`
 - **Descrição geral**: Permite ao cliente encontrar uma sala por busca textual ou navegação hierárquica (Instituição > Edifício > Sala) e solicitar a chave.
-- **Funcionalidades/Proposta**: Campo de busca com autocompletar. Ao selecionar a sala, exibe detalhes e botão "Solicitar Chave". Após a solicitação, redireciona para `/acesso/{nova_key_id}`.
+- **Funcionalidades/Proposta**: Campo de busca com autocompletar. Ao selecionar a sala, exibe detalhes e botão "Solicitar Chave". Após a solicitação, redireciona para `/access/{nova_key_id}`.
 - **Endpoints Sugeridos**:
   - `GET /institutions/search?q={query}` – Lista instituições compatíveis com uma query.
   - `GET /buildings/search?q={query}` – Lista edifícios de uma instituição compatíveis com uma query.
@@ -65,7 +65,7 @@
 ---
 
 ### 6. Tela de Acesso (access_page)
-- **URL**: `/acesso/{key_id}`
+- **URL**: `/access/{key_id}`
 - **Descrição geral**: Exibição do QR Code gigante e do código alfanumérico para leitura na câmera da fechadura (ESP32-CAM).
 - **Funcionalidades/Proposta**: Mostra dados da sala, horário de expiração e status (válido/já usado). Fundo branco puro para facilitar a leitura ótica.
 - **Endpoints Sugeridos**:
@@ -95,7 +95,7 @@
 ---
 
 ### 9. Perfil e Configurações (profile_page)
-- **URL**: `/perfil`
+- **URL**: `/profile`
 - **Descrição geral**: Exibição e edição dos dados do usuário logado (nome, e-mail, alteração de senha).
 - **Funcionalidades/Proposta**: Para administradores, opção de "Alternar para visualização de cliente" (útil para testes). Preferências de acessibilidade (ex: modo de alto contraste) são ajustadas aqui.
 - **Endpoints Sugeridos**:
