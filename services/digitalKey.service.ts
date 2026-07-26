@@ -1,5 +1,6 @@
 import {
   CreateDigitalKeyRequest,
+  CreateDigitalKeyResponse,
   DigitalKey,
   RequestDigitalKeyResponse,
 } from "@/types/digitalKey";
@@ -16,9 +17,19 @@ export async function getDigitalKeys(): Promise<DigitalKey[]> {
   return response.json();
 }
 
+export async function getDigitalKeyByKeyId(keyId: number): Promise<DigitalKey> {
+  const response = await fetch(`${API_URL}/digital_key?key_id=${keyId}`);
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar a chave digital.");
+  }
+
+  return response.json();
+}
+
 export async function createDigitalKey(
   data: CreateDigitalKeyRequest
-) {
+): Promise<CreateDigitalKeyResponse> {
   const token = localStorage.getItem("access_token");
 
   const response = await fetch(`${API_URL}/digital_key/new`, {

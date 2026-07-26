@@ -52,7 +52,18 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code} -> %{redirect_url}\\\\n\" http://localhost:3000/)",
       "Bash(curl -s -D - -o /dev/null http://localhost:3000/)",
       "Bash(curl -sL -D - -o /dev/null http://localhost:3000/)",
-      "Bash(curl -sD - -o /dev/null http://localhost:3000/)"
+      "Bash(curl -sD - -o /dev/null http://localhost:3000/)",
+      "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\\\\n\" \"http://127.0.0.1:8000/digital_key?key_id=3\")",
+      "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\\\\n\" \"http://127.0.0.1:8000/digital_key?id=3&key_id=3\")",
+      "Bash(npm view *)",
+      "Bash(npm install *)",
+      "Bash(npm audit *)",
+      "Bash(node -e \"const {QRCodeSVG} = require\\('qrcode.react'\\); console.log\\(typeof QRCodeSVG\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(npm uninstall *)",
+      "Bash(xargs cat)",
+      "Bash(node /tmp/claude-1000/-home-mperugini-tcc-portotipo-front-causplock-frontend/295a3082-0894-439a-93d2-5f719542ee39/scratchpad/verify_qr.js)",
+      "Bash(curl -s -m 15 -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)"
     ]
   }
 }

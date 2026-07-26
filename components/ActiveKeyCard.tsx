@@ -1,20 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { DashboardKeyRow } from "@/hooks/useClientDashboard";
 
 interface ActiveKeyCardProps {
   keyRow: DashboardKeyRow;
+  onGenerateAccess: (keyId: number) => void;
 }
 
-export default function ActiveKeyCard({ keyRow }: ActiveKeyCardProps) {
-  const router = useRouter();
-
+export default function ActiveKeyCard({
+  keyRow,
+  onGenerateAccess,
+}: ActiveKeyCardProps) {
   return (
-    <div
-      className="key-card"
-      onClick={() => router.push(`/access/${keyRow.id}`)}
-    >
+    <div className="key-card" onClick={() => onGenerateAccess(keyRow.id)}>
       <span className="status-badge status-active">Pronta para uso</span>
 
       <h3>{keyRow.roomName}</h3>

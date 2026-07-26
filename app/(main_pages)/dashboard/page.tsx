@@ -4,12 +4,23 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useClientDashboard } from "@/hooks/useClientDashboard";
+import { useKeyQrCode } from "@/hooks/useKeyQrCode";
 import ActiveKeyCard from "@/components/ActiveKeyCard";
 import DigitalKeysTable from "@/components/DigitalKeysTable";
+import QrCodeModal from "@/components/QrCodeModal";
 
 export default function Page() {
   const router = useRouter();
   const { user, keys, loading, error } = useClientDashboard();
+
+  const {
+    isOpen: qrOpen,
+    loading: qrLoading,
+    error: qrError,
+    qrDataUrl,
+    openForKey,
+    close: closeQr,
+  } = useKeyQrCode();
 
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
@@ -50,7 +61,11 @@ export default function Page() {
               ) : (
                 <div className="key-cards">
                   {activeKeys.map((key) => (
-                    <ActiveKeyCard key={key.id} keyRow={key} />
+                    <ActiveKeyCard
+                      key={key.id}
+                      keyRow={key}
+                      onGenerateAccess={openForKey}
+                    />
                   ))}
                 </div>
               )}
@@ -59,11 +74,19 @@ export default function Page() {
 
               <h2>Todas as chaves</h2>
 
-              <DigitalKeysTable keys={keys} />
+              <DigitalKeysTable keys={keys} onGenerateAccess={openForKey} />
             </>
           )}
         </div>
       </div>
+
+      <QrCodeModal
+        isOpen={qrOpen}
+        loading={qrLoading}
+        error={qrError}
+        qrDataUrl={qrDataUrl}
+        onClose={closeQr}
+      />
     </main>
   );
 }

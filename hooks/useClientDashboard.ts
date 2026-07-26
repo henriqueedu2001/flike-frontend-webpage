@@ -59,8 +59,8 @@ export function useClientDashboard() {
             id: key.id,
             roomName: room?.name ?? "Sala desconhecida",
             buildingName: building?.name ?? "Prédio desconhecido",
-            expiration: key.expiration,
-            isActive: new Date(key.expiration).getTime() > now,
+            expiration: key.expires_at,
+            isActive: key.used === 0 && new Date(key.expires_at).getTime() > now,
           };
         });
 

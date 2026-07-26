@@ -1,15 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { DashboardKeyRow } from "@/hooks/useClientDashboard";
 
 interface DigitalKeysTableProps {
   keys: DashboardKeyRow[];
+  onGenerateAccess: (keyId: number) => void;
 }
 
-export default function DigitalKeysTable({ keys }: DigitalKeysTableProps) {
-  const router = useRouter();
-
+export default function DigitalKeysTable({
+  keys,
+  onGenerateAccess,
+}: DigitalKeysTableProps) {
   return (
     <div className="table-container">
       <table>
@@ -45,7 +46,7 @@ export default function DigitalKeysTable({ keys }: DigitalKeysTableProps) {
               <td>
                 <button
                   className="btn-action success small"
-                  onClick={() => router.push(`/access/${key.id}`)}
+                  onClick={() => onGenerateAccess(key.id)}
                 >
                   Gerar chave de acesso
                 </button>
