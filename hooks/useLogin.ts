@@ -18,17 +18,12 @@ export default function useLogin() {
 
       setError("");
 
-      const data = await login({
+      await login({
         email,
         password,
       });
 
-      localStorage.setItem(
-        "access_token",
-        data.access_token
-      );
-
-      window.location.href = "admin/dashboard";
+      window.location.href = "/dashboard";
 
     } catch (err) {
 

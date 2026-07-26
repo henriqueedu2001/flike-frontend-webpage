@@ -1,20 +1,17 @@
 "use client";
 
-export interface Building {
-  id: number;
-  institution_id: number;
-  name: string;
-  city: string;
-  state: string;
-  created_at: string;
-}
+import { Building } from "@/types/building";
 
 interface BuildingsTableProps {
   buildings: Building[];
+  onEdit?: (building: Building) => void;
+  onDelete?: (building: Building) => void;
 }
 
 export default function BuildingsTable({
   buildings,
+  onEdit,
+  onDelete,
 }: BuildingsTableProps) {
   return (
     <div className="table-container">
@@ -27,6 +24,7 @@ export default function BuildingsTable({
             <th>Cidade</th>
             <th>Estado</th>
             <th>Criado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
 
@@ -47,6 +45,24 @@ export default function BuildingsTable({
 
               <td>
                 {new Date(building.created_at).toLocaleString("pt-BR")}
+              </td>
+
+              <td>
+                <div className="table-actions">
+                  <button
+                    className="btn-action secondary small"
+                    onClick={() => onEdit?.(building)}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    className="btn-action danger small"
+                    onClick={() => onDelete?.(building)}
+                  >
+                    Excluir
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

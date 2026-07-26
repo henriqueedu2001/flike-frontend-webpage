@@ -1,75 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import UsersTable from "@/components/UsersTable";
-import GlobalModal from "@/components/GlobalModal";
+import { useKeyRequests } from "@/hooks/useKeyRequests";
+import KeyRequestsTable from "@/components/KeyRequestsTable";
+import { DigitalKeyRequestStatus } from "@/types/digitalKey";
 
-import { useUsers } from "@/hooks/useUsers";
+type StatusFilter = DigitalKeyRequestStatus | "all";
 
-type ModalType = "user" | "institution" | "building" | "room";
+const FILTERS: { label: string; value: StatusFilter }[] = [
+  { label: "Pendentes", value: "pending" },
+  { label: "Aprovadas", value: "approved" },
+  { label: "Rejeitadas", value: "rejected" },
+  { label: "Todas", value: "all" },
+];
 
 export default function Page() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<ModalType | null>(null);
+  const router = useRouter();
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("pending");
 
-  const {
-    users,
-    loading,
-    error,
-    refresh,
-  } = useUsers();
+  const { requests, loading, error, actioningId, approve, reject } =
+    useKeyRequests(statusFilter === "all" ? undefined : statusFilter);
 
-  function openModal(type: ModalType) {
-    setModalType(type);
-    setModalOpen(true);
-  }
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      router.replace("/login");
+    }
+  }, [router]);
 
-  if (loading) {
-    return (
-      <main className="p-6">
-        <h2>Carregando usuários...</h2>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="p-6">
-        <h2>{error}</h2>
-      </main>
-    );
+  function handleReject(id: number) {
+    if (confirm("Rejeitar esta solicitação de acesso?")) {
+      reject(id);
+    }
   }
 
   return (
     <main className="p-6">
       <div className="page-margin">
-        <h1 className="text-3xl font-bold">
-          Gerenciar Usuários
-        </h1>
+        <h1 className="text-3xl font-bold">Gestão de Chaves</h1>
+        <p>Visualize e responda aos pedidos de acesso.</p>
 
         <div className="content-padding">
-
-          <div className="page-title">
-            <h2>Usuários Cadastrados</h2>
-
-            <button
-              className="btn-action success"
-              onClick={() => openModal("user")}
-            >
-              + Novo Usuário
-            </button>
+          <div className="status-filter">
+            {FILTERS.map((filter) => (
+              <button
+                key={filter.value}
+                className={
+                  statusFilter === filter.value ? "status-filter-active" : ""
+                }
+                onClick={() => setStatusFilter(filter.value)}
+              >
+                {filter.label}
+              </button>
+            ))}
           </div>
 
-          <UsersTable users={users} />
+          {loading && <p>Carregando...</p>}
 
-          <GlobalModal
-            isOpen={modalOpen}
-            type={modalType}
-            onClose={() => setModalOpen(false)}
-            onSuccess={refresh}
-          />
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
+          {!loading && !error && (
+            <KeyRequestsTable
+              requests={requests}
+              actioningId={actioningId}
+              onApprove={approve}
+              onReject={handleReject}
+            />
+          )}
         </div>
       </div>
     </main>

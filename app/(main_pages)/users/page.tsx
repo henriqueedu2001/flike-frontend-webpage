@@ -3,15 +3,12 @@
 import { useState } from "react";
 
 import UsersTable from "@/components/UsersTable";
-import GlobalModal from "@/components/GlobalModal";
+import UserFormModal from "@/components/modals/UserFormModal";
 
 import { useUsers } from "@/hooks/useUsers";
 
-type ModalType = "user" | "institution" | "building" | "room";
-
 export default function Page() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<ModalType | null>(null);
 
   const {
     users,
@@ -19,11 +16,6 @@ export default function Page() {
     error,
     refresh,
   } = useUsers();
-
-  function openModal(type: ModalType) {
-    setModalType(type);
-    setModalOpen(true);
-  }
 
   if (loading) {
     return (
@@ -55,7 +47,7 @@ export default function Page() {
 
             <button
               className="btn-action success"
-              onClick={() => openModal("user")}
+              onClick={() => setModalOpen(true)}
             >
               + Novo Usuário
             </button>
@@ -63,9 +55,8 @@ export default function Page() {
 
           <UsersTable users={users} />
 
-          <GlobalModal
+          <UserFormModal
             isOpen={modalOpen}
-            type={modalType}
             onClose={() => setModalOpen(false)}
             onSuccess={refresh}
           />

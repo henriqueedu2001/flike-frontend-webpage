@@ -12,7 +12,29 @@ export async function getUsers(): Promise<User[]> {
   return response.json();
 }
 
-export async function createUser(data: unknown) {
+export async function getCurrentUser(): Promise<User> {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(`${API_URL}/user/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao carregar dados do usuário.");
+  }
+
+  return response.json();
+}
+
+interface CreateUserData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export async function createUser(data: CreateUserData) {
   const response = await fetch(`${API_URL}/user/new`, {
     method: "POST",
     headers: {
@@ -21,9 +43,11 @@ export async function createUser(data: unknown) {
     body: JSON.stringify(data),
   });
 
+  const body = await response.json();
+
   if (!response.ok) {
-    throw new Error("Erro ao criar usuário.");
+    throw new Error(JSON.stringify(body, null, 2));
   }
 
-  return response.json();
+  return body;
 }

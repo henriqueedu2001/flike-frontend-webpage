@@ -1,19 +1,17 @@
 "use client";
 
-export interface Room {
-  id: number;
-  building_id: number;
-  name: string;
-  number: string;
-  created_at: string;
-}
+import { Room } from "@/types/room";
 
 interface RoomsTableProps {
   rooms: Room[];
+  onEdit?: (room: Room) => void;
+  onDelete?: (room: Room) => void;
 }
 
 export default function RoomsTable({
   rooms,
+  onEdit,
+  onDelete,
 }: RoomsTableProps) {
   return (
     <div className="table-container">
@@ -25,6 +23,7 @@ export default function RoomsTable({
             <th>Número</th>
             <th>Prédio</th>
             <th>Criado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
 
@@ -43,6 +42,24 @@ export default function RoomsTable({
 
               <td>
                 {new Date(room.created_at).toLocaleString("pt-BR")}
+              </td>
+
+              <td>
+                <div className="table-actions">
+                  <button
+                    className="btn-action secondary small"
+                    onClick={() => onEdit?.(room)}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    className="btn-action danger small"
+                    onClick={() => onDelete?.(room)}
+                  >
+                    Excluir
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

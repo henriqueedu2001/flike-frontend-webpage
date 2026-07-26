@@ -1,18 +1,17 @@
 "use client";
 
-export interface Institution {
-  id: number;
-  owner_id: number;
-  name: string;
-  created_at: string;
-}
+import { Institution } from "@/types/institution";
 
 interface InstitutionsTableProps {
   institutions: Institution[];
+  onEdit?: (institution: Institution) => void;
+  onDelete?: (institution: Institution) => void;
 }
 
 export default function InstitutionsTable({
   institutions,
+  onEdit,
+  onDelete,
 }: InstitutionsTableProps) {
   return (
     <div className="table-container">
@@ -23,6 +22,7 @@ export default function InstitutionsTable({
             <th>Nome</th>
             <th>Owner ID</th>
             <th>Criado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
 
@@ -39,6 +39,24 @@ export default function InstitutionsTable({
 
               <td>
                 {new Date(institution.created_at).toLocaleString("pt-BR")}
+              </td>
+
+              <td>
+                <div className="table-actions">
+                  <button
+                    className="btn-action secondary small"
+                    onClick={() => onEdit?.(institution)}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    className="btn-action danger small"
+                    onClick={() => onDelete?.(institution)}
+                  >
+                    Excluir
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
