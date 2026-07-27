@@ -1,6 +1,7 @@
 import { Institution } from "@/types/institution";
 import { Building } from "@/types/building";
 import { Room } from "@/types/room";
+import { KeyHolder } from "@/types/keyHolder";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -233,4 +234,15 @@ export async function deleteRoom(id: number) {
         throw new Error(JSON.stringify(body, null, 2));
 
     return body;
+}
+
+export async function getRoomKeyHolders(roomId: number): Promise<KeyHolder[]> {
+    const res = await fetch(`${API_URL}/admin/rooms/${roomId}/key-holders`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar portadores de chave desta sala");
+
+    return res.json();
 }

@@ -179,6 +179,9 @@ export default function Page() {
                 rooms={rooms}
                 onEdit={openRoomModal}
                 onDelete={handleDeleteRoom}
+                onRowClick={(room) =>
+                  router.push(`/admin/rooms/${room.id}/key-holders`)
+                }
               />
           </AdminSection>
 

@@ -6,12 +6,14 @@ interface RoomsTableProps {
   rooms: Room[];
   onEdit?: (room: Room) => void;
   onDelete?: (room: Room) => void;
+  onRowClick?: (room: Room) => void;
 }
 
 export default function RoomsTable({
   rooms,
   onEdit,
   onDelete,
+  onRowClick,
 }: RoomsTableProps) {
   return (
     <div className="table-container">
@@ -29,7 +31,11 @@ export default function RoomsTable({
 
         <tbody>
           {rooms.map((room) => (
-            <tr key={room.id}>
+            <tr
+              key={room.id}
+              className={onRowClick ? "selectable-row" : undefined}
+              onClick={() => onRowClick?.(room)}
+            >
               <td>{room.id}</td>
 
               <td>
@@ -48,14 +54,20 @@ export default function RoomsTable({
                 <div className="table-actions">
                   <button
                     className="btn-action secondary small"
-                    onClick={() => onEdit?.(room)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit?.(room);
+                    }}
                   >
                     Editar
                   </button>
 
                   <button
                     className="btn-action danger small"
-                    onClick={() => onDelete?.(room)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.(room);
+                    }}
                   >
                     Excluir
                   </button>
