@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { useAdminData } from "@/hooks/useAdminData";
+import { useMyAdminData } from "@/hooks/useMyAdminData";
 import AdminSection from "@/components/admin/AdminSection";
 import InstitutionFormModal from "@/components/modals/InstitutionFormModal";
 import BuildingFormModal from "@/components/modals/BuildingFormModal";
@@ -15,14 +16,24 @@ import DigitalLocksTable from "@/components/DigitalLocksTable";
 import { Institution } from "@/types/institution";
 import { Building } from "@/types/building";
 import { Room } from "@/types/room";
+import { DigitalLock } from "@/types/digitalLock";
 import {
   deleteInstitution,
   deleteBuilding,
   deleteRoom,
 } from "@/services/admin.service";
+import { deleteDigitalLock } from "@/services/digitalLock.service";
 
 // undefined = modal closed, null = create mode, object = editing that row
 export default function Page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      router.replace("/login");
+    }
+  }, [router]);
+
   const [institutionModal, setInstitutionModal] = useState<
     Institution | null | undefined
   >(undefined);
@@ -35,7 +46,9 @@ export default function Page() {
     undefined
   );
 
-  const [digitalLockModalOpen, setDigitalLockModalOpen] = useState(false);
+  const [digitalLockModal, setDigitalLockModal] = useState<
+    DigitalLock | null | undefined
+  >(undefined);
 
   // Bumped on every open so the modal remounts (and re-reads initialValues)
   // even when re-opening the exact same row for editing.
@@ -47,13 +60,13 @@ export default function Page() {
     rooms,
     digitalLocks,
     refresh,
-  } = useAdminData();
+  } = useMyAdminData();
 
   function openInstitutionModal(institution: Institution | null) {
     setInstitutionModal(institution);
     setBuildingModal(undefined);
     setRoomModal(undefined);
-    setDigitalLockModalOpen(false);
+    setDigitalLockModal(undefined);
     setModalKey((k) => k + 1);
   }
 
@@ -61,7 +74,7 @@ export default function Page() {
     setBuildingModal(building);
     setInstitutionModal(undefined);
     setRoomModal(undefined);
-    setDigitalLockModalOpen(false);
+    setDigitalLockModal(undefined);
     setModalKey((k) => k + 1);
   }
 
@@ -69,12 +82,12 @@ export default function Page() {
     setRoomModal(room);
     setInstitutionModal(undefined);
     setBuildingModal(undefined);
-    setDigitalLockModalOpen(false);
+    setDigitalLockModal(undefined);
     setModalKey((k) => k + 1);
   }
 
-  function openDigitalLockModal() {
-    setDigitalLockModalOpen(true);
+  function openDigitalLockModal(digitalLock: DigitalLock | null) {
+    setDigitalLockModal(digitalLock);
     setInstitutionModal(undefined);
     setBuildingModal(undefined);
     setRoomModal(undefined);
@@ -111,6 +124,17 @@ export default function Page() {
       refresh();
     } catch (error) {
       alert(error instanceof Error ? error.message : "Erro ao excluir sala.");
+    }
+  }
+
+  async function handleDeleteDigitalLock(digitalLock: DigitalLock) {
+    if (!confirm(`Excluir a fechadura #${digitalLock.id}?`)) return;
+
+    try {
+      await deleteDigitalLock(digitalLock.id);
+      refresh();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Erro ao excluir fechadura.");
     }
   }
 
@@ -161,9 +185,13 @@ export default function Page() {
           <AdminSection
               title="Fechaduras Digitais"
               buttonText="+ Nova Fechadura"
-              onClick={openDigitalLockModal}
+              onClick={() => openDigitalLockModal(null)}
           >
-              <DigitalLocksTable digitalLocks={digitalLocks} />
+              <DigitalLocksTable
+                digitalLocks={digitalLocks}
+                onEdit={openDigitalLockModal}
+                onDelete={handleDeleteDigitalLock}
+              />
           </AdminSection>
 
           <InstitutionFormModal
@@ -192,8 +220,9 @@ export default function Page() {
 
           <DigitalLockFormModal
             key={`digital-lock-${modalKey}`}
-            isOpen={digitalLockModalOpen}
-            onClose={() => setDigitalLockModalOpen(false)}
+            isOpen={digitalLockModal !== undefined}
+            digitalLock={digitalLockModal}
+            onClose={() => setDigitalLockModal(undefined)}
             onSuccess={refresh}
           />
 

@@ -7,8 +7,10 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-export async function getDigitalKeys(): Promise<DigitalKey[]> {
-  const response = await fetch(`${API_URL}/digital_key/all`);
+export async function getDigitalKeysByUserId(
+  userId: number
+): Promise<DigitalKey[]> {
+  const response = await fetch(`${API_URL}/digital_key?id=${userId}`);
 
   if (!response.ok) {
     throw new Error("Erro ao buscar chaves digitais.");

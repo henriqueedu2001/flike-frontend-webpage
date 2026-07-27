@@ -40,19 +40,53 @@ export async function getRooms(): Promise<Room[]> {
     return res.json();
 }
 
+// Scoped to the institutions/buildings/rooms the logged-in user owns —
+// use these for the admin dashboard. The plain getInstitutions/getBuildings/
+// getRooms above hit the public, unscoped /*/all endpoints and stay in use
+// for the client-facing access-request search, which needs to browse
+// everything, not just what the caller owns.
+export async function getMyInstitutions(): Promise<Institution[]> {
+    const res = await fetch(`${API_URL}/admin/institutions`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar suas instituições");
+
+    return res.json();
+}
+
+export async function getMyBuildings(): Promise<Building[]> {
+    const res = await fetch(`${API_URL}/admin/buildings`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar seus prédios");
+
+    return res.json();
+}
+
+export async function getMyRooms(): Promise<Room[]> {
+    const res = await fetch(`${API_URL}/admin/rooms`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar suas salas");
+
+    return res.json();
+}
+
 interface CreateInstitutionData {
-    user_id: number;
     name: string;
 }
 
 export async function createInstitution(data: CreateInstitutionData) {
-    const params = new URLSearchParams({
-        user_id: String(data.user_id),
-        institution_name: data.name,
-    });
-
-    const res = await fetch(`${API_URL}/institution/new?${params.toString()}`, {
+    const res = await fetch(`${API_URL}/admin/institutions`, {
         method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(data),
     });
 
     const body = await res.json();
@@ -108,9 +142,9 @@ interface BuildingData {
 }
 
 export async function createBuilding(data: BuildingData) {
-    const res = await fetch(`${API_URL}/building/new`, {
+    const res = await fetch(`${API_URL}/admin/buildings`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify(data),
     });
 
@@ -158,9 +192,9 @@ interface RoomData {
 }
 
 export async function createRoom(data: RoomData) {
-    const res = await fetch(`${API_URL}/room/new`, {
+    const res = await fetch(`${API_URL}/admin/rooms`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify(data),
     });
 

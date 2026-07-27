@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import UsersTable from "@/components/UsersTable";
 import UserFormModal from "@/components/modals/UserFormModal";
@@ -8,6 +9,7 @@ import UserFormModal from "@/components/modals/UserFormModal";
 import { useUsers } from "@/hooks/useUsers";
 
 export default function Page() {
+  const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
 
   const {
@@ -16,6 +18,12 @@ export default function Page() {
     error,
     refresh,
   } = useUsers();
+
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      router.replace("/login");
+    }
+  }, [router]);
 
   if (loading) {
     return (

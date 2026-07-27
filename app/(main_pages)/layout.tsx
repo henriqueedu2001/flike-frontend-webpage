@@ -31,7 +31,7 @@ export default function AdminLayout({
 
             <div className="page-title">
               <h1 className="text-3xl font-bold">
-                FLIKE - ADMIN
+                FLIKE
               </h1>
             </div>
           </div>

@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 
-import LoginForm from "@/components/LoginForm";
-import useLogin from "@/hooks/useLogin";
+import SignupForm from "@/components/SignupForm";
+import useSignup from "@/hooks/useSignup";
 
 export default function Page() {
 
   const {
-    signIn,
+    signUp,
     loading,
     error,
-  } = useLogin();
+  } = useSignup();
 
   return (
     <main className="login-page">
@@ -25,19 +25,19 @@ export default function Page() {
             <h1>FLIKE</h1>
 
             <p>
-              Sistema de Controle de Acesso
+              Criar Conta
             </p>
 
           </div>
 
-          <LoginForm
-            onSubmit={signIn}
+          <SignupForm
+            onSubmit={signUp}
             loading={loading}
             error={error}
           />
 
           <p className="auth-switch-link">
-            Não tem uma conta? <Link href="/signup">Cadastre-se</Link>
+            Já tem uma conta? <Link href="/login">Entrar</Link>
           </p>
 
         </div>

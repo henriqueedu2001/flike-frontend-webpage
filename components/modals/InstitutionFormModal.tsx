@@ -4,12 +4,7 @@ import FormModal, { FormField, FormValues } from "./FormModal";
 import { createInstitution, updateInstitution } from "@/services/admin.service";
 import { Institution } from "@/types/institution";
 
-const CREATE_FIELDS: FormField[] = [
-  { name: "user_id", label: "User ID", type: "number" },
-  { name: "name", label: "Nome" },
-];
-
-const EDIT_FIELDS: FormField[] = [{ name: "name", label: "Nome" }];
+const FIELDS: FormField[] = [{ name: "name", label: "Nome" }];
 
 interface Props {
   isOpen: boolean;
@@ -34,7 +29,6 @@ export default function InstitutionFormModal({
         });
       } else {
         await createInstitution({
-          user_id: Number(form.user_id ?? 0),
           name: String(form.name ?? ""),
         });
       }
@@ -51,7 +45,7 @@ export default function InstitutionFormModal({
     <FormModal
       isOpen={isOpen}
       title={isEditing ? "Editar Instituição" : "Nova Instituição"}
-      fields={isEditing ? EDIT_FIELDS : CREATE_FIELDS}
+      fields={FIELDS}
       initialValues={institution ? { name: institution.name } : undefined}
       onClose={onClose}
       onSubmit={handleSubmit}

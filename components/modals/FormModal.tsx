@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 export interface FormField {
   name: string;
@@ -20,6 +20,8 @@ interface Props {
    * per-entity modal components) so each row gets its own fresh initial state.
    */
   initialValues?: FormValues;
+  /** Rendered above the auto-generated fields, e.g. a search-to-select picker. */
+  extraContent?: ReactNode;
   onClose: () => void;
   /** Return true once the submission succeeded, so the modal can reset and close. */
   onSubmit: (form: FormValues) => Promise<boolean>;
@@ -30,6 +32,7 @@ export default function FormModal({
   title,
   fields,
   initialValues,
+  extraContent,
   onClose,
   onSubmit,
 }: Props) {
@@ -69,6 +72,8 @@ export default function FormModal({
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">{title}</h2>
+
+        {extraContent}
 
         {fields.map((field) => (
           <div key={field.name} className="modal-field">

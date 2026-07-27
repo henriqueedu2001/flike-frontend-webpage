@@ -1,28 +1,60 @@
 "use client";
 
-import FormModal, { FormField, FormValues } from "./FormModal";
-import { createDigitalLock } from "@/services/digitalLock.service";
-
-const FIELDS: FormField[] = [
-  { name: "room_id", label: "Room ID", type: "number" },
-];
+import { useEffect, useState } from "react";
+import FormModal from "./FormModal";
+import EntityPicker from "@/components/EntityPicker";
+import {
+  createDigitalLock,
+  updateDigitalLock,
+} from "@/services/digitalLock.service";
+import { getMyRooms } from "@/services/admin.service";
+import { DigitalLock } from "@/types/digitalLock";
+import { Room } from "@/types/room";
 
 interface Props {
   isOpen: boolean;
+  digitalLock?: DigitalLock | null;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
 export default function DigitalLockFormModal({
   isOpen,
+  digitalLock,
   onClose,
   onSuccess,
 }: Props) {
-  async function handleSubmit(form: FormValues) {
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    getMyRooms()
+      .then((data) => {
+        setRooms(data);
+
+        if (digitalLock) {
+          setSelectedRoom(
+            data.find((item) => item.id === digitalLock.room_id) ?? null
+          );
+        }
+      })
+      .catch(() => setRooms([]));
+  }, [isOpen, digitalLock]);
+
+  async function handleSubmit() {
+    if (!selectedRoom) {
+      alert("Selecione uma sala válida antes de salvar a fechadura.");
+      return false;
+    }
+
     try {
-      await createDigitalLock({
-        room_id: Number(form.room_id ?? 0),
-      });
+      if (digitalLock) {
+        await updateDigitalLock(digitalLock.id, { room_id: selectedRoom.id });
+      } else {
+        await createDigitalLock({ room_id: selectedRoom.id });
+      }
 
       onSuccess?.();
       return true;
@@ -35,8 +67,25 @@ export default function DigitalLockFormModal({
   return (
     <FormModal
       isOpen={isOpen}
-      title="Nova Fechadura Digital"
-      fields={FIELDS}
+      title={digitalLock ? "Editar Fechadura Digital" : "Nova Fechadura Digital"}
+      fields={[]}
+      extraContent={
+        <EntityPicker<Room>
+          label="Sala"
+          placeholder="Buscar sala..."
+          items={rooms}
+          columns={[
+            { header: "Nome", render: (item) => item.name },
+            { header: "Número", render: (item) => item.number },
+          ]}
+          getKey={(item) => item.id}
+          getLabel={(item) => `${item.name} (nº ${item.number})`}
+          selected={selectedRoom}
+          onSelect={setSelectedRoom}
+          onClear={() => setSelectedRoom(null)}
+          emptyMessage="Nenhuma sala encontrada."
+        />
+      }
       onClose={onClose}
       onSubmit={handleSubmit}
     />
