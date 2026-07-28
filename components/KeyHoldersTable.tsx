@@ -15,6 +15,8 @@ export default function KeyHoldersTable({ keyHolders }: KeyHoldersTableProps) {
             <th>User ID</th>
             <th>Nome</th>
             <th>Email</th>
+            <th>Chave Utilizada</th>
+            <th>Data de Uso</th>
           </tr>
         </thead>
 
@@ -28,12 +30,28 @@ export default function KeyHoldersTable({ keyHolders }: KeyHoldersTableProps) {
               </td>
 
               <td>{holder.email}</td>
+
+              <td>
+                <span
+                  className={`status-badge ${
+                    holder.used ? "status-used" : "status-active"
+                  }`}
+                >
+                  {holder.used ? "Já utilizada" : "Ainda não utilizada"}
+                </span>
+              </td>
+
+              <td>
+                {holder.used_at
+                  ? new Date(holder.used_at).toLocaleString("pt-BR")
+                  : "—"}
+              </td>
             </tr>
           ))}
 
           {keyHolders.length === 0 && (
             <tr>
-              <td colSpan={3}>Nenhum portador de chave para esta sala.</td>
+              <td colSpan={5}>Nenhum portador de chave para esta sala.</td>
             </tr>
           )}
         </tbody>

@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation";
 import UsersTable from "@/components/UsersTable";
 import UserFormModal from "@/components/modals/UserFormModal";
 
-import { useUsers } from "@/hooks/useUsers";
+import { useKeyHolders } from "@/hooks/useKeyHolders";
 
 export default function Page() {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
 
   const {
-    users,
+    keyHolders,
     loading,
     error,
     refresh,
-  } = useUsers();
+  } = useKeyHolders();
 
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
@@ -51,7 +51,7 @@ export default function Page() {
         <div className="content-padding">
 
           <div className="page-title">
-            <h2>Usuários Cadastrados</h2>
+            <h2>Portadores de Chave</h2>
 
             <button
               className="btn-action success"
@@ -61,7 +61,12 @@ export default function Page() {
             </button>
           </div>
 
-          <UsersTable users={users} />
+          <p>
+            Usuários que geraram chaves para salas das suas instituições.
+            Clique em um usuário para ver o histórico de uso.
+          </p>
+
+          <UsersTable users={keyHolders} />
 
           <UserFormModal
             isOpen={modalOpen}

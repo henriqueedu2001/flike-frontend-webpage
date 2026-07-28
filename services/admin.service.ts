@@ -2,6 +2,7 @@ import { Institution } from "@/types/institution";
 import { Building } from "@/types/building";
 import { Room } from "@/types/room";
 import { KeyHolder } from "@/types/keyHolder";
+import { KeyUsageHistoryEntry } from "@/types/keyUsageHistory";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -243,6 +244,30 @@ export async function getRoomKeyHolders(roomId: number): Promise<KeyHolder[]> {
 
     if (!res.ok)
         throw new Error("Erro ao buscar portadores de chave desta sala");
+
+    return res.json();
+}
+
+export async function getKeyHolders(): Promise<KeyHolder[]> {
+    const res = await fetch(`${API_URL}/admin/key-holders`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar portadores de chave");
+
+    return res.json();
+}
+
+export async function getKeyHolderHistory(
+    userId: number
+): Promise<KeyUsageHistoryEntry[]> {
+    const res = await fetch(`${API_URL}/admin/key-holders/${userId}/history`, {
+        headers: authHeaders(),
+    });
+
+    if (!res.ok)
+        throw new Error("Erro ao buscar histórico de uso deste usuário");
 
     return res.json();
 }

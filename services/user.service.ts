@@ -12,6 +12,16 @@ export async function getUsers(): Promise<User[]> {
   return response.json();
 }
 
+export async function getUserById(id: number): Promise<User> {
+  const response = await fetch(`${API_URL}/user?id=${id}`);
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar usuário.");
+  }
+
+  return response.json();
+}
+
 export async function getCurrentUser(): Promise<User> {
   const token = localStorage.getItem("access_token");
 
@@ -39,6 +49,58 @@ export async function createUser(data: CreateUserData) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const body = await response.json();
+
+  if (!response.ok) {
+    throw new Error(extractErrorMessage(body));
+  }
+
+  return body;
+}
+
+interface UpdateUserData {
+  name: string;
+  email: string;
+}
+
+export async function updateCurrentUser(data: UpdateUserData): Promise<User> {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(`${API_URL}/user/me`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  const body = await response.json();
+
+  if (!response.ok) {
+    throw new Error(extractErrorMessage(body));
+  }
+
+  return body;
+}
+
+interface ChangePasswordData {
+  current_password: string;
+  new_password: string;
+}
+
+export async function changePassword(data: ChangePasswordData) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(`${API_URL}/user/change-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
