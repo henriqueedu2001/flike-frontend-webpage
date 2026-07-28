@@ -1,25 +1,15 @@
-To do:
-- histórico de acessos por sala
-- melhorar tela de usuários (mostrando histórico e solicitações de um usuário ao selecionar ele na lista)
-- tela de configurações
-- melhor a ux/ui no geral (ícones, usuário no canto etc)
 
-To do:
-- histórico de acessos por sala
-- melhorar tela de usuários (mostrando histórico e solicitações de um usuário ao selecionar ele na lista)
-- tela de configurações
-- melhor a ux/ui no geral (ícones, usuário no canto etc)
 
 ## Lista de Páginas (Resumo)
 
 1. [X] **Página Inicial** – Apresentação institucional e portal para login/cadastro.
 2. [X] **Login** – Autenticação de usuários existentes.
 3. [X] **Cadastro** – Criação de nova conta de usuário.
-4. [ ] **Dashboard do Cliente** – Visão geral das chaves ativas e atalho para solicitar acesso.
-5. [ ] **Busca e Solicitação de Acesso** – Localização hierárquica de salas e emissão de chave digital.
-6. [ ] **Tela de Acesso (QR Code)** – Exibição do QR Code para leitura na fechadura.
-7. [ ] **Dashboard do Administrador** – CRUD de instituições, edifícios, salas e fechaduras.
-8. [ ] **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes.
+4. [X] **Dashboard do Cliente** – Visão geral das chaves ativas e atalho para solicitar acesso.
+5. [X] **Busca e Solicitação de Acesso** – Localização hierárquica de salas e emissão de chave digital.
+6. [X] **Tela de Acesso (QR Code)** – Exibição do QR Code para leitura na fechadura.
+7. [X] **Dashboard do Administrador** – CRUD de instituições, edifícios, salas e fechaduras. (parcialmente pronto)
+8. [X] **Gestão de Usuários e Chaves** – Emissão/revogação de chaves e listagem de clientes. (parcialmente pronto)
 9. [ ] **Perfil e Configurações** – Alteração de dados pessoais e preferências de acessibilidade.
 
 ---
@@ -114,3 +104,8 @@ To do:
   - `GET /user/me` – Retorna dados atuais.
   - `PUT /user/me` – Atualiza `name` e `email`.
   - `POST /user/change-password` – Recebe `current_password` e `new_password`.
+To do:
+- histórico de acessos por sala
+- melhorar tela de usuários (mostrando histórico e solicitações de um usuário ao selecionar ele na lista)
+- tela de configurações
+- melhor a ux/ui no geral (ícones, usuário no canto etc)
