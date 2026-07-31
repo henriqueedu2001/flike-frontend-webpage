@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -18,32 +19,32 @@ export default function SideBar({
     {
       label: "Dashboard usuário",
       href: "/dashboard",
-      icon: "📊",
+      icon: "/icons/home.png",
     },
     {
       label: "Solicitar acesso",
       href: "/access/request",
-      icon: "📊",
+      icon: "/icons/key-hole.png",
     },
     {
       label: "Dashboard do Administrador",
       href: "/admin/dashboard",
-      icon: "📊",
+      icon: "/icons/dashboard.png",
     },
     {
       label: "Gestão de Chaves",
       href: "/admin/keys",
-      icon: "📊",
+      icon: "/icons/key.png",
     },
     {
       label: "Usuários",
       href: "/users",
-      icon: "👥",
+      icon: "/icons/group.png",
     },
     {
       label: "Configurações",
       href: "/profile",
-      icon: "⚙️",
+      icon: "/icons/settings.png",
     },
   ];
 
@@ -69,9 +70,7 @@ export default function SideBar({
         </span>
 
         <div className="nav-header">
-          <strong>CAUSP-LOCK</strong>
-          <br />
-          <small>Administrador</small>
+          <strong>FLIKE</strong>
         </div>
 
         <div className="nav-links">
@@ -85,7 +84,14 @@ export default function SideBar({
                   : ""
               }
             >
-              {link.icon} {link.label}
+              <Image
+                src={link.icon}
+                alt=""
+                width={20}
+                height={20}
+                className="nav-link-icon"
+              />
+              {link.label}
             </Link>
           ))}
         </div>

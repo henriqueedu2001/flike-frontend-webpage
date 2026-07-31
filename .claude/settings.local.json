@@ -89,7 +89,26 @@
       "Bash(npm init *)",
       "Bash(timeout 60 npm install playwright@1.62.0)",
       "Bash(node drive.mjs)",
-      "Bash(node drive_profile.mjs)"
+      "Bash(node drive_profile.mjs)",
+      "Bash(xargs -0 -I{} echo {})",
+      "Bash(mkdir -p public/icons)",
+      "Bash(git mv *)",
+      "Bash(identify -verbose \"/home/mperugini/tcc/portotipo-front/causplock-frontend/public/icons/home.png\")",
+      "Bash(pip install *)",
+      "Bash(python3 -m venv /tmp/claude-1000/-home-mperugini-tcc-portotipo-front-causplock-frontend/e0becf7e-8a7e-4731-b2c9-1f4deeb53a59/scratchpad/venv)",
+      "Bash(/tmp/claude-1000/-home-mperugini-tcc-portotipo-front-causplock-frontend/e0becf7e-8a7e-4731-b2c9-1f4deeb53a59/scratchpad/venv/bin/pip install *)",
+      "Bash(/tmp/claude-1000/-home-mperugini-tcc-portotipo-front-causplock-frontend/e0becf7e-8a7e-4731-b2c9-1f4deeb53a59/scratchpad/venv/bin/python3 -c ' *)",
+      "Bash(node drive_sidebar.mjs)",
+      "Bash(python3 -c \"import datetime; print\\(datetime.datetime.utcfromtimestamp\\(1785284474\\)\\)\")",
+      "Bash(file \"/home/mperugini/tcc/portotipo-front/causplock-frontend/public/icons/\"*.png)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\\\\n\" http://localhost:3000/icons/group.png)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\\\\n\" http://localhost:3000/icons/home.png)",
+      "Bash(curl -s \"http://localhost:3000/_next/image?url=%2Ficons%2Fgroup.png&w=48&q=75\" -o /tmp/group_opt.png -w \"%{http_code} %{size_download}\\\\n\")",
+      "Bash(curl -s \"http://localhost:3000/_next/image?url=%2Ficons%2Fhome.png&w=48&q=75\" -o /tmp/home_opt.png -w \"%{http_code} %{size_download}\\\\n\")",
+      "Read(//tmp/**)",
+      "Bash(node zoom.mjs)",
+      "Bash(curl -sI \"http://localhost:3000/_next/image?url=%2Ficons%2Fgroup.png&w=48&q=75\")",
+      "Bash(curl -sI \"http://localhost:3000/_next/image?url=%2Ficons%2Fhome.png&w=48&q=75\")"
     ]
   }
 }

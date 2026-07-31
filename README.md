@@ -214,3 +214,10 @@ To do:
   - `GET /user/me` – Retorna dados atuais.
   - `PUT /user/me` – Atualiza `name` e `email`.
   - `POST /user/change-password` – Recebe `current_password` e `new_password`.
+
+
+  TO DO:
+  - Melhorar método de fornecimento de chave: No formato atual do projeto cada usuário pede uma única chave, para um único uso, que terá que ser aprovada pelo admin uma a uma. Possível melhoria seria melhorar o pedido de acesso, de tal 
+  forma que o usuário pudesse solicitar acesso para um intervalo de tempo (data/horas de dias da semana), para um ou mais salas/prédios, e o administrador aprova ou não este pedido. Porém este pedido não deve gerar uma chave única para todo esse intervalo de tempo
+  - Implementar no back lógica de expiração de chave (fazer com que chaves parem de funcionar depois de determinado intervalo de tempo ou depois de um uso)
+  - Informar ao back quando uma chave foi usada, já tenho o endpoint para isso, mas para testar precisaria do hardware chamando este endpoint

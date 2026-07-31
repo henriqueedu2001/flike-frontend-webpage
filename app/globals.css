@@ -46,6 +46,15 @@
   color: white;
 }
 
+.nav-link-icon {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.nav-links a:hover .nav-link-icon {
+  opacity: 1;
+}
+
 .close-btn {
   position: absolute;
   top: 15px;
