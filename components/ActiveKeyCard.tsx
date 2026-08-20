@@ -18,9 +18,11 @@ export default function ActiveKeyCard({
       <h3>{keyRow.roomName}</h3>
       <p>{keyRow.buildingName}</p>
 
-      <p className="key-card-expiration">
-        Expira em {new Date(keyRow.expiration).toLocaleString("pt-BR")}
-      </p>
+      {keyRow.expiration && (
+        <p className="key-card-expiration">
+          Expira em {new Date(keyRow.expiration).toLocaleString("pt-BR")}
+        </p>
+      )}
     </div>
   );
 }

@@ -221,3 +221,4 @@ To do:
   forma que o usuário pudesse solicitar acesso para um intervalo de tempo (data/horas de dias da semana), para um ou mais salas/prédios, e o administrador aprova ou não este pedido. Porém este pedido não deve gerar uma chave única para todo esse intervalo de tempo
   - Implementar no back lógica de expiração de chave (fazer com que chaves parem de funcionar depois de determinado intervalo de tempo ou depois de um uso)
   - Informar ao back quando uma chave foi usada, já tenho o endpoint para isso, mas para testar precisaria do hardware chamando este endpoint
+  - Trabalhar na parte de informar o usuário quando chave foi rejeitada

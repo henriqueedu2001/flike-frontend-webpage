@@ -212,6 +212,11 @@ body {
   color: #b45309;
 }
 
+.status-badge.status-rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 .status-filter {
   display: flex;
   gap: 8px;

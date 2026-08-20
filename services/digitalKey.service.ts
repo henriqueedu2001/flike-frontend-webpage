@@ -2,6 +2,8 @@ import {
   CreateDigitalKeyRequest,
   CreateDigitalKeyResponse,
   DigitalKey,
+  DigitalKeyRequestStatus,
+  MyDigitalKeyRequest,
   RequestDigitalKeyResponse,
 } from "@/types/digitalKey";
 
@@ -45,6 +47,23 @@ export async function createDigitalKey(
 
   if (!response.ok) {
     throw new Error("Erro ao criar chave digital.");
+  }
+
+  return response.json();
+}
+
+export async function getMyDigitalKeyRequests(
+  status?: DigitalKeyRequestStatus
+): Promise<MyDigitalKeyRequest[]> {
+  const token = localStorage.getItem("access_token");
+  const query = status ? `?status=${status}` : "";
+
+  const response = await fetch(`${API_URL}/digital_key/requests${query}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar solicitações de chave.");
   }
 
   return response.json();

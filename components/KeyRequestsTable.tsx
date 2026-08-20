@@ -33,8 +33,10 @@ export default function KeyRequestsTable({
         <thead>
           <tr>
             <th>ID</th>
-            <th>User ID</th>
-            <th>Lock ID</th>
+            <th>Usuário</th>
+            <th>Email</th>
+            <th>Sala</th>
+            <th>Prédio</th>
             <th>Status</th>
             <th>Solicitado em</th>
             <th>Ações</th>
@@ -45,8 +47,10 @@ export default function KeyRequestsTable({
           {requests.map((request) => (
             <tr key={request.id}>
               <td>{request.id}</td>
-              <td>{request.user_id}</td>
-              <td>{request.digital_lock_id}</td>
+              <td>{request.user_name}</td>
+              <td>{request.user_email}</td>
+              <td>{request.room_name}</td>
+              <td>{request.building_name}</td>
 
               <td>
                 <span
@@ -86,7 +90,7 @@ export default function KeyRequestsTable({
 
           {requests.length === 0 && (
             <tr>
-              <td colSpan={6}>Nenhum pedido de acesso encontrado.</td>
+              <td colSpan={8}>Nenhum pedido de acesso encontrado.</td>
             </tr>
           )}
         </tbody>

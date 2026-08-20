@@ -32,4 +32,18 @@ export interface DigitalKeyRequest {
   digital_lock_id: number;
   status: DigitalKeyRequestStatus;
   created_at: string;
+  user_name: string;
+  user_email: string;
+  room_name: string;
+  building_name: string;
+}
+
+export interface MyDigitalKeyRequest {
+  id: number;
+  user_id: number;
+  digital_lock_id: number;
+  status: DigitalKeyRequestStatus;
+  created_at: string;
+  room_name: string;
+  building_name: string;
 }

@@ -3,17 +3,23 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { getCurrentUser } from "@/services/user.service";
-import { getDigitalKeysByUserId } from "@/services/digitalKey.service";
+import {
+  getDigitalKeysByUserId,
+  getMyDigitalKeyRequests,
+} from "@/services/digitalKey.service";
 import { getDigitalLocks } from "@/services/digitalLock.service";
 import { getRooms, getBuildings } from "@/services/admin.service";
 import { User } from "@/types/user";
+
+export type DashboardKeyStatus = "active" | "used" | "rejected";
 
 export interface DashboardKeyRow {
   id: number;
   roomName: string;
   buildingName: string;
-  expiration: string;
+  expiration: string | null;
   isActive: boolean;
+  status: DashboardKeyStatus;
 }
 
 export function useClientDashboard() {
@@ -29,12 +35,14 @@ export function useClientDashboard() {
 
       const currentUser = await getCurrentUser();
 
-      const [myKeys, locks, rooms, buildings] = await Promise.all([
-        getDigitalKeysByUserId(currentUser.id),
-        getDigitalLocks(),
-        getRooms(),
-        getBuildings(),
-      ]);
+      const [myKeys, myRejectedRequests, locks, rooms, buildings] =
+        await Promise.all([
+          getDigitalKeysByUserId(currentUser.id),
+          getMyDigitalKeyRequests("rejected"),
+          getDigitalLocks(),
+          getRooms(),
+          getBuildings(),
+        ]);
 
       const lockById = new Map(locks.map((lock) => [lock.id, lock]));
       const roomById = new Map(rooms.map((room) => [room.id, room]));
@@ -51,17 +59,32 @@ export function useClientDashboard() {
           ? buildingById.get(room.building_id)
           : undefined;
 
+        const isActive =
+          key.used === 0 && new Date(key.expires_at).getTime() > now;
+
         return {
           id: key.id,
           roomName: room?.name ?? "Sala desconhecida",
           buildingName: building?.name ?? "Prédio desconhecido",
           expiration: key.expires_at,
-          isActive: key.used === 0 && new Date(key.expires_at).getTime() > now,
+          isActive,
+          status: isActive ? "active" : "used",
         };
       });
 
+      const rejectedRows: DashboardKeyRow[] = myRejectedRequests.map(
+        (request) => ({
+          id: request.id,
+          roomName: request.room_name,
+          buildingName: request.building_name,
+          expiration: null,
+          isActive: false,
+          status: "rejected",
+        })
+      );
+
       setUser(currentUser);
-      setKeys(rows);
+      setKeys([...rows, ...rejectedRows]);
     } catch {
       setError("Erro ao carregar suas chaves digitais.");
     } finally {
